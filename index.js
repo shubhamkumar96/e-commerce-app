@@ -15,6 +15,15 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", (req, res) => {
+  req.on("data", (data) => {
+    const parsedData = data.toString("utf8").split("&");
+    const formData = {};
+    parsedData.forEach((pair) => {
+      const [key, value] = pair.split("=");
+      formData[key] = value;
+    });
+    console.log(formData);
+  });
   res.send("Account Created!!!");
 });
 
