@@ -1,5 +1,5 @@
 # e-commerce-app
-###  
+###  An E-Commerce App built using NodeJs.
 
 ## Built With
   *   JavaScript, Node.js
