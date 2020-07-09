@@ -14,16 +14,25 @@ app.get("/", (req, res) => {
   `);
 });
 
-app.post("/", (req, res) => {
-  req.on("data", (data) => {
-    const parsedData = data.toString("utf8").split("&");
-    const formData = {};
-    parsedData.forEach((pair) => {
-      const [key, value] = pair.split("=");
-      formData[key] = value;
+const bodyParser = (req, res, next) => {
+  if (req.method === "POST") {
+    req.on("data", (data) => {
+      const parsedData = data.toString("utf8").split("&");
+      const formData = {};
+      parsedData.forEach((pair) => {
+        const [key, value] = pair.split("=");
+        formData[key] = value;
+      });
+      req.body = formData;
+      next();
     });
-    console.log(formData);
-  });
+  } else {
+    next();
+  }
+};
+
+app.post("/", bodyParser, (req, res) => {
+  console.log(req.body);
   res.send("Account Created!!!");
 });
 
