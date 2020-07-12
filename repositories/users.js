@@ -1,0 +1,21 @@
+const fs = require("fs");
+
+class UsersRepository {
+  constructor(filename) {
+    if (!filename) {
+      throw new Error("Filename is required while creating a Repository.");
+    }
+    this.filename = filename;
+    try {
+      fs.accessSync(this.filename);
+    } catch (err) {
+      fs.writeFileSync(this.filename, "[]");
+    }
+  }
+
+  async getAll() {
+    return JSON.parse(
+      await fs.promises.readFile(this.filename, { encoding: "utf-8" })
+    );
+  }
+}
